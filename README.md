@@ -14,7 +14,7 @@ A Postman collection with 4 test cases for the OpenWeatherMap API, querying curr
 ## Files
 
 - `OpenWeatherMap_Collection.postman_collection.json` — Postman collection with all 4 requests and test scripts
-- `OpenWeatherMap_London.postman_environment.json` — Environment file with variables (base URL, API key, city, expected coordinates)
+  
 
 ## How to Run
 
