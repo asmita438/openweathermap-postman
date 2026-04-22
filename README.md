@@ -21,6 +21,10 @@ A Postman collection with 4 test cases for the OpenWeatherMap API, querying curr
 1. Import  JSON files into Postman via **Import**
 2. Click **Run collection**
 
+> **Note:** The `api_key` variable is intentionally left blank. 
+> Replace it with your own free API key from [openweathermap.org](https://openweathermap.org/api) 
+> before running the collection.
+
 ## Variables Used
 
 | Variable | Description |
