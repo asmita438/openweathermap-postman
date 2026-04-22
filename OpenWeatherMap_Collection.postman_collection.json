@@ -1,0 +1,213 @@
+{
+  "info": {
+    "_postman_id": "owm-london-collection-002",
+    "name": "OpenWeatherMap - London Weather Tests",
+    "description": "A collection of 4 test cases against the OpenWeatherMap API for London, UK.\n\nVariables used:\n- {{base_url}}     → https://api.openweathermap.org/data/2.5\n- {{api_key}}      → Your OpenWeatherMap API key\n- {{city}}         → London,uk\n- {{expected_lat}} → 51.51\n- {{expected_lon}} → -0.13",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://api.openweathermap.org/data/2.5",
+      "type": "string",
+      "description": "Base URL for the OpenWeatherMap API"
+    },
+    {
+      "key": "api_key",
+      "value": "b6907d289e10d714a6e88b30761fae22",
+      "type": "string",
+      "description": "OpenWeatherMap API key"
+    },
+    {
+      "key": "city",
+      "value": "London,uk",
+      "type": "string",
+      "description": "City query parameter"
+    },
+    {
+      "key": "expected_lat",
+      "value": "51.51",
+      "type": "string",
+      "description": "Expected latitude for London, UK"
+    },
+    {
+      "key": "expected_lon",
+      "value": "-0.13",
+      "type": "string",
+      "description": "Expected longitude for London, UK"
+    }
+  ],
+  "item": [
+    {
+      "name": "TC-01: Verify Latitude and Longitude",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const jsonData = pm.response.json();",
+              "const expectedLat = parseFloat(pm.collectionVariables.get(\"expected_lat\"));",
+              "const expectedLon = parseFloat(pm.collectionVariables.get(\"expected_lon\"));",
+              "",
+              "pm.test(\"Latitude matches expected value: \" + expectedLat, function () {",
+              "    pm.expect(jsonData.coord.lat).to.eql(expectedLat);",
+              "});",
+              "",
+              "pm.test(\"Longitude matches expected value: \" + expectedLon, function () {",
+              "    pm.expect(jsonData.coord.lon).to.eql(expectedLon);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/weather?q={{city}}&appid={{api_key}}",
+          "host": ["{{base_url}}"],
+          "path": ["weather"],
+          "query": [
+            { "key": "q", "value": "{{city}}" },
+            { "key": "appid", "value": "{{api_key}}" }
+          ]
+        },
+        "description": "Verifies that the coordinates returned for London, UK match the expected latitude and longitude stored as collection variables."
+      },
+      "response": []
+    },
+    {
+      "name": "TC-02: Verify Response Status Code is 200",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200 OK\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response time is less than 5000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+              "});",
+              "",
+              "pm.test(\"Content-Type header is application/json\", function () {",
+              "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/weather?q={{city}}&appid={{api_key}}",
+          "host": ["{{base_url}}"],
+          "path": ["weather"],
+          "query": [
+            { "key": "q", "value": "{{city}}" },
+            { "key": "appid", "value": "{{api_key}}" }
+          ]
+        },
+        "description": "Verifies that the API returns HTTP 200, a JSON Content-Type header, and responds within an acceptable time."
+      },
+      "response": []
+    },
+    {
+      "name": "TC-03: Verify City Name in Response",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const jsonData = pm.response.json();",
+              "",
+              "pm.test(\"City name is London\", function () {",
+              "    pm.expect(jsonData.name).to.eql(\"London\");",
+              "});",
+              "",
+              "pm.test(\"Country code is GB\", function () {",
+              "    pm.expect(jsonData.sys.country).to.eql(\"GB\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/weather?q={{city}}&appid={{api_key}}",
+          "host": ["{{base_url}}"],
+          "path": ["weather"],
+          "query": [
+            { "key": "q", "value": "{{city}}" },
+            { "key": "appid", "value": "{{api_key}}" }
+          ]
+        },
+        "description": "Verifies that the response body correctly identifies the city as London and the country as GB."
+      },
+      "response": []
+    },
+    {
+      "name": "TC-04: Verify Temperature Data Exists and is a Number",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const jsonData = pm.response.json();",
+              "",
+              "pm.test(\"main.temp exists and is a number\", function () {",
+              "    pm.expect(jsonData.main).to.have.property(\"temp\");",
+              "    pm.expect(jsonData.main.temp).to.be.a(\"number\");",
+              "});",
+              "",
+              "pm.test(\"main.humidity exists and is a number\", function () {",
+              "    pm.expect(jsonData.main).to.have.property(\"humidity\");",
+              "    pm.expect(jsonData.main.humidity).to.be.a(\"number\");",
+              "});",
+              "",
+              "pm.test(\"wind.speed exists and is a number\", function () {",
+              "    pm.expect(jsonData.wind).to.have.property(\"speed\");",
+              "    pm.expect(jsonData.wind.speed).to.be.a(\"number\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/weather?q={{city}}&appid={{api_key}}",
+          "host": ["{{base_url}}"],
+          "path": ["weather"],
+          "query": [
+            { "key": "q", "value": "{{city}}" },
+            { "key": "appid", "value": "{{api_key}}" }
+          ]
+        },
+        "description": "Verifies that weather data fields — temperature, humidity, and wind speed — are present and are valid numbers."
+      },
+      "response": []
+    }
+  ]
+}
