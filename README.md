@@ -18,9 +18,8 @@ A Postman collection with 4 test cases for the OpenWeatherMap API, querying curr
 
 ## How to Run
 
-1. Import both JSON files into Postman via **Import**
-2. Select the **OpenWeatherMap - London Environment** from the environment dropdown
-3. Click **Run collection**
+1. Import  JSON files into Postman via **Import**
+2. Click **Run collection**
 
 ## Variables Used
 
